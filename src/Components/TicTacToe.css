@@ -1,0 +1,27 @@
+.boxes{
+    display: flex;
+    height: 180px;
+    width: 180px;
+    background: #888;
+    border: 4px solid #3a3a3a;
+    border-radius: 12px;
+    cursor: pointer;
+}
+.boxes:hover{
+    background-color: #00c8ff;
+    transition: .5s;
+}
+
+.board{
+    height: 600px;
+    width: 564px;
+    display: flex;
+    margin: auto;
+}
+.title span{
+    color: #00c8ff;
+  }
+
+.title img{
+    height: 40px;
+}
