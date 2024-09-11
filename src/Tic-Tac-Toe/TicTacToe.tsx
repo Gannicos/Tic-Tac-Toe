@@ -49,7 +49,7 @@ export default function TicTacToe(){
                 setCount(++count);
                 setMove(move=num);
             }else{
-                titleRef.current.innerHTML = `Round: <img style='${x_css}' src='${X_icon}'>`;
+                titleRef.current.innerHTML = `Round ${count}: <img style='${x_css}' src='${X_icon}'>`;
                 e.target.innerHTML = `<img style='${O_css}' src='${O_icon}'>`;
                 data[num]="o";
                 setCount(++count);
@@ -106,6 +106,7 @@ export default function TicTacToe(){
         box_array.map((e)=>{
             e.current.innerHTML = ''
         })
+        setCount(0);
     }
 
     return (
