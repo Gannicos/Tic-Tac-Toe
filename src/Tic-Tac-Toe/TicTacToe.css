@@ -1,27 +1,75 @@
+/*Boxes CSS*/
 .boxes{
     display: flex;
     height: 180px;
     width: 180px;
     background: #888;
-    border: 4px solid #3a3a3a;
+    border: 4px solid #242424;
     border-radius: 12px;
     cursor: pointer;
-}
-.boxes:hover{
-    background-color: #00c8ff;
     transition: .5s;
 }
+.boxes:hover{
+    background-color: #3a3a3a;
+}
 
+/*Reset CSS*/
+.container-reset{
+    margin-left: 5rem;
+    margin-right: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.reset{
+    margin-top: 20px;
+    background-color: #3a3a3a;
+    transition: .5s;
+}
+.reset:hover{
+    background-color: #00c8ff;
+    color: #242424;
+    border: none;
+}
+
+/*Board CSS*/
 .board{
-    height: 600px;
+    background-color:#242424;
+    height: 564px;
     width: 564px;
     display: flex;
     margin: auto;
+    border-radius: 10px;
 }
+
+
+/*Titles CSS*/
 .title span{
     color: #00c8ff;
   }
 
 .title img{
-    height: 40px;
+    height: 25px;
+}
+
+/*Score CSS*/
+.score{
+    font-size: 25px;
+    border: 1px solid #888;
+    width:100%; 
+    border-radius: 12px;
+    transition: .5s;
+}
+.score:hover{
+    font-size: 40px;
+    border: 1px solid transparent;
+}
+
+.score tr, td{
+    width: 8rem;
+}
+
+
+.score_top{
+    color: #00c8ff;
 }

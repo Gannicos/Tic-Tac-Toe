@@ -5,9 +5,9 @@ import X_icon from '../assets/X.png';
 
 //get array of X or O
 let data = ['','','','','','','','',''];
-let X_css = "background-color:#747bff; padding:30px; border-radius:8px;";
+let X_css = "background-color:#00c8ff; padding:30px; border-radius:8px;";
 let O_css = "background-color:#dff8ff; padding:30px; border-radius:8px;";
-let x_css = "background-color:#747bff; padding:10px; border-radius:8px;";
+let x_css = "background-color:#00c8ff; padding:10px; border-radius:8px;";
 let o_css = "background-color:#dff8ff; padding:10px; border-radius:8px;";
 
 
@@ -32,10 +32,6 @@ export default function TicTacToe(){
     let box9 = useRef(null);
     let box_array = [box1,box2,box3,box4,box5,box6,box7,box8,box9];
 
-    const score = () =>{
-        roundRef.current.innerHTML = `X: ${xWins} | O: ${oWins} | Draws: ${draw}`;
-    }
-
     const toggle = (e,num) => {
         if(data[num]=="x"||data[num]=="o"){
             data[num]=data[num];
@@ -43,13 +39,13 @@ export default function TicTacToe(){
             if(lock){
                 return 0;
             }else if(count%2===0){
-                titleRef.current.innerHTML = `Round ${count}: <img style='${o_css}' src='${O_icon}'>`;
+                titleRef.current.innerHTML = `Round <span>${count}</span>: <img style='${o_css}' src='${O_icon}'>`;
                 e.target.innerHTML = `<img style='${X_css}' src='${X_icon}'>`;
                 data[num]="x";
                 setCount(++count);
                 setMove(move=num);
             }else{
-                titleRef.current.innerHTML = `Round ${count}: <img style='${x_css}' src='${X_icon}'>`;
+                titleRef.current.innerHTML = `Round <span>${count}</span>: <img style='${x_css}' src='${X_icon}'>`;
                 e.target.innerHTML = `<img style='${O_css}' src='${O_icon}'>`;
                 data[num]="o";
                 setCount(++count);
@@ -81,7 +77,6 @@ export default function TicTacToe(){
             if(locdat===9){
                 titleRef.current.innerHTML = `Draw!`;
                 setDraws(++draw);
-                score();
             }
         }
     }
@@ -96,23 +91,42 @@ export default function TicTacToe(){
             titleRef.current.innerHTML = `Congrats! <img style='${o_css}'src=${O_icon}>`;
             setOWins(++oWins);
         }
-        score();
+        
     }
 
-    const reset = () => {
+    const resetBoard = () => {
         setLock(false);
         data = ['','','','','','','','',''];
-        titleRef.current.innerHTML = '<span>React</span> Tic Tac Toe';
+        titleRef.current.innerHTML = '<span>Player</span> vs <span>Player</span>';
         box_array.map((e)=>{
             e.current.innerHTML = ''
         })
         setCount(0);
     }
 
+    const resetScore = () =>{
+        setDraws(0);
+        setXWins(0);
+        setOWins(0);
+    }
+
     return (
         <div className="container">
-            <h1 className="title" ref={titleRef}><span>React</span> Tic Tac Toe</h1>
-            <h1 className="title" ref={roundRef}></h1>
+            <h1 className="title" ref={titleRef}><span>Player</span> vs <span>Player</span></h1>
+            <h1 className="title" ref={roundRef}>
+                <table className='score'>
+                    <tr className='score_top'>
+                        <th>X</th>
+                        <th>O</th>
+                        <th>Draws</th>
+                    </tr>
+                    <tr className='score_bottom'>
+                        <td>{xWins}</td>
+                        <td>{oWins}</td>
+                        <td>{draw}</td>
+                    </tr>
+                </table>
+            </h1>
             <div className="board">
                 <div className="row1">
                     <div className="boxes" ref={box1} onClick={(e)=>{toggle(e,0)}}></div>
@@ -130,7 +144,10 @@ export default function TicTacToe(){
                     <div className="boxes" ref={box9} onClick={(e)=>{toggle(e,8)}}></div>
                 </div>
             </div>
-            <button className="reset" onClick={()=>{reset()}}>Reset</button>
+            <div className='container-reset'>
+                <button className="reset" onClick={()=>{resetBoard()}}>Reset Board</button>
+                <button className="reset" onClick={()=>{resetScore()}}>Reset Score</button>
+            </div>
         </div>
     );
 }

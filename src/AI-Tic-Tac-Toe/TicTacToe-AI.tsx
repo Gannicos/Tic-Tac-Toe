@@ -5,9 +5,9 @@ import X_icon from '../assets/X.png';
 
 //get array of X or O
 let data = ['', '', '', '', '', '', '', '', ''];
-let X_css = "background-color:#747bff; padding:30px; border-radius:8px;";
+let X_css = "background-color:#00c8ff; padding:30px; border-radius:8px;";
 let O_css = "background-color:#dff8ff; padding:30px; border-radius:8px;";
-let x_css = "background-color:#747bff; padding:10px; border-radius:8px;";
+let x_css = "background-color:#00c8ff; padding:10px; border-radius:8px;";
 let o_css = "background-color:#dff8ff; padding:10px; border-radius:8px;";
 
 export default function TicTacToe() {
@@ -29,86 +29,84 @@ export default function TicTacToe() {
     let box8 = useRef(null);
     let box_array = [box0, box1, box2, box3, box4, box5, box6, box7, box8];
 
-    const score = () => {
-        roundRef.current.innerHTML = `X: ${xWins} | O: ${oWins} | Draws: ${draw}`;
-    };
-
     const toggle = (e, num) => {
-        if (data[num] == "x" || data[num] == "o") {
+        if(data[num] == "x" || data[num] == "o"){
             return;
-        }
-
-        if (lock) return;
-
-        // Player move
-        if (count % 2 === 0) {
+        }else if(lock){
+            return;
+        }/*Player move*/else if(count % 2 === 0) {
             e.target.innerHTML = `<img style='${X_css}' src='${X_icon}'>`;
             data[num] = "x";
-            setCount(count + 1);
-        }
-        checkWin();
-
-        if (!lock) {
-            // AI (Minimax) move
+            setCount(++count);
+        }/*AI     move*/if(!lock) {
             const bestMove = getBestMove();
-            if (bestMove !== -1) {
+            if(bestMove !== -1){
                 data[bestMove] = "o";
                 box_array[bestMove].current.innerHTML = `<img style='${O_css}' src='${O_icon}'>`;
-                setCount(count + 2);
+                setCount(++count);
             }
-            checkWin();
         }
+        checkWin();
     };
 
+
+
+
+    //win checker
     const checkWin = () => {
-        const winningCombinations = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6]
-        ];
-
-        for (let combo of winningCombinations) {
-            const [a, b, c] = combo;
-            if (data[a] && data[a] === data[b] && data[a] === data[c]) {
-                won(data[a]);
-                return;
+        if(data[0]===data[1] && data[1]===data[2] && data[2]!==""){
+            won(data[2]);
+        }else if(data[3]===data[4] && data[4]===data[5] && data[5]!==""){
+            won(data[5]);
+        }else if(data[6]===data[7] && data[7]===data[8] && data[8]!==""){
+            won(data[8]);
+        }else if(data[0]===data[3] && data[3]===data[6] && data[6]!==""){
+            won(data[6]);
+        }else if(data[1]===data[4] && data[4]===data[7] && data[7]!==""){
+            won(data[7]);
+        }else if(data[2]===data[5] && data[5]===data[8] && data[8]!==""){
+            won(data[8]);
+        }else if(data[0]===data[4] && data[4]===data[8] && data[8]!==""){
+            won(data[8]);
+        }else if(data[2]===data[4] && data[4]===data[6] && data[6]!==""){
+            won(data[6]);
+        }else if(data.every(element=>element!==null)){
+            let locdat = data.filter(Boolean).length;
+            if(locdat===9){
+                titleRef.current.innerHTML = `Draw!`;
+                setDraws(++draw);
+    
             }
         }
-
-        if (data.every((element) => element !== "")) {
-            titleRef.current.innerHTML = "Draw!";
-            setDraws(draw + 1);
-            setLock(true);
-            score();
-        }
-    };
+    }
 
     const won = (winner) => {
         setLock(true);
-        if (winner === "x") {
+        if(winner==="x"){
             titleRef.current.innerHTML = `Congrats! <img style='${x_css}' src=${X_icon}>`;
-            setXWins(xWins + 1);
-        } else if (winner === "o") {
-            titleRef.current.innerHTML = `Congrats! <img style='${o_css}'src=${O_icon}>`;
-            setOWins(oWins + 1);
-        }
-        score();
-    };
+            setXWins(++xWins);
 
-    const reset = () => {
+        }else if(winner==="o"){
+            titleRef.current.innerHTML = `Congrats! <img style='${o_css}'src=${O_icon}>`;
+            setOWins(++oWins);
+        }
+    }
+
+    const resetBoard = () => {
         setLock(false);
-        data = ['', '', '', '', '', '', '', '', ''];
-        titleRef.current.innerHTML = '<span> AI React</span> Tic Tac Toe';
+        data = ['','','','','','','','',''];
+        titleRef.current.innerHTML = 'Versus <span>AI</span>';
         box_array.map((e) => {
             e.current.innerHTML = '';
         });
         setCount(0);
     };
+
+    const resetScore = () =>{
+        setDraws(0);
+        setXWins(0);
+        setOWins(0);
+    }
 
     // Minimax Algorithm
     const minimax = (newData, depth, isMaximizing) => {
@@ -193,8 +191,21 @@ export default function TicTacToe() {
 
     return (
         <div className="container">
-            <h1 className="title" ref={titleRef}><span>AI React</span> Tic Tac Toe</h1>
-            <h1 className="title" ref={roundRef}></h1>
+            <h1 className="title" ref={titleRef}>Versus <span>AI</span></h1>
+            <h1 className="title" ref={roundRef}>
+                <table className='score'>
+                    <tr className='score_top'>
+                        <th>X</th>
+                        <th>O</th>
+                        <th>Draws</th>
+                    </tr>
+                    <tr className='score_bottom'>
+                        <td>{xWins}</td>
+                        <td>{oWins}</td>
+                        <td>{draw}</td>
+                    </tr>
+                </table>
+            </h1>
             <div className="board">
                 <div className="row1">
                     <div className="boxes" ref={box0} onClick={(e) => { toggle(e, 0) }}></div>
@@ -212,7 +223,10 @@ export default function TicTacToe() {
                     <div className="boxes" ref={box8} onClick={(e) => { toggle(e, 8) }}></div>
                 </div>
             </div>
-            <button className="reset" onClick={() => { reset() }}>Reset</button>
+            <div className='container-reset'>
+                <button className="reset" onClick={()=>{resetBoard()}}>Reset Board</button>
+                <button className="reset" onClick={()=>{resetScore()}}>Reset Score</button>
+            </div>
         </div>
     );
 }
